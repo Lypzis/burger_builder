@@ -2,12 +2,13 @@ import React from 'react';
 import classes from './App.css';
 
 import Layout from '../components/Layout/Layout';
+import BurgerBuilder from './BurgerBuilder/BurgerBuilder';
 
 function App() {
   return (
     <div className={classes.App}>
       <Layout>
-        <p>I am a Layout! :D</p>
+        <BurgerBuilder />
       </Layout>    
     </div>
   );

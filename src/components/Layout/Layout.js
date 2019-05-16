@@ -9,7 +9,7 @@ const Layout = props => {
     return (
         <Aux>
             <header><p>Toolbar, SideDrawer, Backdrop</p></header>
-            <main>{props.children}</main>
+            <main className={classes.content}>{props.children}</main>
             <footer>Burger Builder © 2019 by Lypzis.</footer>
         </Aux>
     );
