@@ -1,5 +1,6 @@
 {
   "name": "burger_builder_react",
+  "homepage": "http://Lypzis.github.io/burger_builder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -61,7 +62,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -129,6 +131,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^2.0.1",
     "prop-types": "^15.7.2"
   }
 }
