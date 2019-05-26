@@ -7,7 +7,7 @@ import Aux from '../../hoc/Aux';
 
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
-const Burger = props => {
+const burger = props => {
     let transformedIngredients = Object.keys(props.ingredients).map(ingKey => {
         // returns an array of the respective ingredient value.
         // the "Array()" method will create something like [cheese, cheese], 
@@ -32,4 +32,4 @@ const Burger = props => {
     );
 }
 
-export default withClass(Burger, classes.Burger); 
+export default withClass(burger, classes.Burger); 
