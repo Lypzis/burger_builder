@@ -2,9 +2,6 @@ import React from 'react';
 
 import classes from './Burger.css';
 
-import withClass from '../../hoc/withClass';
-import Aux from '../../hoc/Aux';
-
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 const burger = props => {
@@ -24,12 +21,12 @@ const burger = props => {
     };
 
     return (
-        <Aux>
+        <div className={classes.Burger}>
             <BurgerIngredient type='bread-top' />
             {transformedIngredients}
             <BurgerIngredient type='bread-bottom' />
-        </Aux>
+        </div>
     );
 }
 
-export default withClass(burger, classes.Burger); 
+export default burger; 

@@ -32,6 +32,7 @@
 }
 
 .Label {
+    text-align: left;
     padding: 1rem;
     font-weight: bold;
     width: 8rem;

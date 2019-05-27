@@ -5,6 +5,14 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 import Aux from '../../hoc/Aux';
 
+//Global constants are named entirely in capital letters
+const INGREDIENT_PRICES = {
+    salad: .5,
+    cheese: .6,
+    meat: 1.4,
+    bacon: .8
+};
+
 class BurgerBuilder extends Component {
 
     state = {
@@ -15,15 +23,64 @@ class BurgerBuilder extends Component {
             meat: 0
         },
         purchased: true,
-        totalPrice: 0
+        totalPrice: 4
     };
+
+    /**
+     * @param {object} ingredients
+     * @param {float} totalPrice
+     * @param {string} type
+     */
+    updateBurger = (ingredientsCount, totalPrice, type) => {
+        const updatedIngredients = {
+            ...this.state.ingredients // fill this object with this.state.ingredients attributes
+        };                            // it becomes a copy of the current state
+
+        updatedIngredients[type] = ingredientsCount; // update the respective ingredient value
+
+        this.setState({
+            ingredients: updatedIngredients,
+            totalPrice
+        });
+
+         /*
+        this.setState((prevState, props) => {
+            return {
+                person: persons,
+                changeCounter: prevState.changeCounter + 1 // refers to previous state, to avoid asynchronous misscalculations/errors
+            }
+            // update state with the new information
+        });*/
+    } 
+
+    /**
+     * @param {string} type 
+     */
+    addIngredientHandler = type => {
+        const updatedCount = this.state.ingredients[type] + 1;
+        const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
+
+        this.updateBurger(updatedCount, newPrice, type);
+    }
+
+    /**
+     * @param {string} type 
+     */
+    removeIngredientHandler = type => {
+        const updatedCount = this.state.ingredients[type] - 1;
+        const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
+
+        this.updateBurger(updatedCount, newPrice, type);
+    }
 
     render() {
 
         return (
             <Aux>
                 <Burger ingredients={this.state.ingredients} />
-                <BuildControls />
+                <BuildControls
+                    addIngredient={this.addIngredientHandler}
+                    removeIngredient={this.removeIngredientHandler} />
             </Aux>
         );
     }
