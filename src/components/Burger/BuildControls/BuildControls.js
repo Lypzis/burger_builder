@@ -14,8 +14,9 @@ const controls = [
     // ...
 ];
 
-const buildControls = props => (
+const buildControls = props => ( // to fixed will fix the price value to have only two number after the dot.
     <Aux>
+        <p>Current Price: <strong>${props.price.toFixed(2)}</strong></p>
         {
             controls.map(control => <BuildControl
                 key={control.label}
