@@ -26,6 +26,9 @@ const buildControls = props => ( // to fixed will fix the price value to have on
                 disabled={props.disabled[control.type]} />
             )
         }
+        <button
+            className={classes.OrderButton}
+            disabled={!props.purchasable}>ORDER NOW</button>
     </Aux>
 );
 

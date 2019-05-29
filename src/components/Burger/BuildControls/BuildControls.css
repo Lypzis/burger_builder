@@ -10,3 +10,33 @@
     padding: 1rem 0;
     border-radius: 1.2rem;
 }
+
+.OrderButton {
+    background-color: #dad735;
+    outline: none;
+    cursor: pointer;
+    border: .1rem solid #966909;
+    color: #966909;
+    font-family: inherit;
+    font-size: 2rem;
+    padding: 1.5rem 3rem;
+    margin: 1.5rem;
+    border-radius: 1rem;
+    transition: all .2s;
+}
+
+.OrderButton:hover,
+.OrderButton:focus {
+    background-color: #f8f55b;
+    transform: scale(1.2);
+}
+
+.OrderButton:disabled,
+.OrderButton:hover:disabled,
+.OrderButton:focus:disabled {
+    cursor: not-allowed;
+    transform: none;
+    background-color: #AC9980;
+    border: 1px solid #7E7365;
+    color: #ccc;
+}

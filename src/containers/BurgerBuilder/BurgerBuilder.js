@@ -22,9 +22,22 @@ class BurgerBuilder extends Component {
             cheese: 0,
             meat: 0
         },
-        purchased: true,
-        totalPrice: 4
+        totalPrice: 4,
+        purchasable: false
     };
+
+    /**
+     * Updates the 'purchasable' attribute of the state to true if total value of ingredients
+     * is greater than 0, else remains or is returned to false;
+     * @param {Object} updatedIngredients Up to date copy of this.state.ingredients;
+     */
+    updatePurchaseState = updatedIngredients => {
+        const total = Object.keys(updatedIngredients)
+            .map(ingredientKey => updatedIngredients[ingredientKey]) //maps keys, returning the specific ingredient values from const 'ingredients'
+            .reduce((total, ingreditentValue) => total + ingreditentValue, 0);  // then sums it to a total. initial value is 0
+
+        this.setState({ purchasable: total > 0 }); // true if at least 1 ingredient is added to the burger
+    }
 
     /**
      * @param {object} ingredients
@@ -43,15 +56,8 @@ class BurgerBuilder extends Component {
             totalPrice
         });
 
-         /*
-        this.setState((prevState, props) => {
-            return {
-                person: persons,
-                changeCounter: prevState.changeCounter + 1 // refers to previous state, to avoid asynchronous misscalculations/errors
-            }
-            // update state with the new information
-        });*/
-    } 
+       this.updatePurchaseState(updatedIngredients);
+    }
 
     /**
      * @param {string} type 
@@ -75,7 +81,7 @@ class BurgerBuilder extends Component {
     }
 
     render() {
-        const disabledInfo = {...this.state.ingredients};
+        const disabledInfo = { ...this.state.ingredients };
 
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0; // replaces values with true or false if it attends the condition
@@ -87,8 +93,9 @@ class BurgerBuilder extends Component {
                 <BuildControls
                     addIngredient={this.addIngredientHandler}
                     removeIngredient={this.removeIngredientHandler}
-                    disabled={disabledInfo} 
-                    price={this.state.totalPrice}/>
+                    disabled={disabledInfo}
+                    price={this.state.totalPrice} 
+                    purchasable={this.state.purchasable}/>
             </Aux>
         );
     }
