@@ -43,6 +43,7 @@ class BurgerBuilder extends Component {
     }
 
     /**
+     * Updates one of the 'ingredients' amount
      * @param {object} ingredients
      * @param {float} totalPrice
      * @param {string} type
@@ -59,10 +60,11 @@ class BurgerBuilder extends Component {
             totalPrice
         });
 
-       this.updatePurchaseState(updatedIngredients);
+        this.updatePurchaseState(updatedIngredients);
     }
 
     /**
+     * Adds an ingredient
      * @param {string} type 
      */
     addIngredientHandler = type => {
@@ -73,6 +75,8 @@ class BurgerBuilder extends Component {
     }
 
     /**
+     * Removes an ingredient
+     * - Has prevention against negative values.
      * @param {string} type 
      */
     removeIngredientHandler = type => {
@@ -83,8 +87,22 @@ class BurgerBuilder extends Component {
             this.updateBurger(updatedCount, newPrice, type);
     }
 
+    /**
+     * Sets 'purchasing' to true
+     */
     purchaseHandler = () => {
-        this.setState({purchasing: true});
+        this.setState({ purchasing: true });
+    }
+
+    /**
+     * Sets 'purchasing' to true
+     */
+    purchaseCancelHandler = () => {
+        this.setState({ purchasing: false });
+    }
+
+    purchaseContinueHandler = () => {
+        alert('You Continue! :D');
     }
 
     render() {
@@ -94,19 +112,22 @@ class BurgerBuilder extends Component {
             disabledInfo[key] = disabledInfo[key] <= 0; // replaces values with true or false if it attends the condition
         }
 
-        return (
+        return ( // The Modal and its related content will only if purchasing is true
             <Aux>
-                <Modal show={this.state.purchasing}>
-                    <OrderSummary ingredients={this.state.ingredients} />
+                <Modal show={this.state.purchasing} modalClose={this.purchaseCancelHandler}>
+                    <OrderSummary
+                        purchaseContinue={this.purchaseContinueHandler}
+                        purchaseCancel={this.purchaseCancelHandler}
+                        ingredients={this.state.ingredients} />
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls
                     addIngredient={this.addIngredientHandler}
                     removeIngredient={this.removeIngredientHandler}
                     disabled={disabledInfo}
-                    price={this.state.totalPrice} 
+                    price={this.state.totalPrice}
                     purchasable={this.state.purchasable}
-                    ordered={this.purchaseHandler}/>
+                    ordered={this.purchaseHandler} />
             </Aux>
         );
     }
