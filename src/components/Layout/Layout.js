@@ -5,7 +5,7 @@ import classes from './Layout.css';
 import Aux from '../../hoc/Aux';
 import withClass from '../../hoc/withClass';
 
-const Layout = props => {
+const layout = props => {
     return (
         <Aux>
             <header><p>Toolbar, SideDrawer, Backdrop</p></header>
@@ -15,4 +15,4 @@ const Layout = props => {
     );
 }
 
-export default withClass(Layout, classes.Layout);
+export default withClass(layout, classes.Layout);
