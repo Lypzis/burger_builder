@@ -1,0 +1,24 @@
+.NavigationItem {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.NavigationItem a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    height: 100%;
+    padding: 1.6rem 1rem;
+    border-bottom: .4rem solid transparent;
+    transition: all .5s;
+}
+
+.NavigationItem a:hover,
+.NavigationItem a:active,
+.NavigationItem a.active,  /* Links that contain active class */
+.NavigationItem a:focus {
+    border-bottom: .4rem solid orangered;
+    background-color: #40a4c8;
+    color: #fff;
+}
