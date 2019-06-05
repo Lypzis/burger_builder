@@ -1,16 +1,15 @@
 .NavigationItem {
-    display: flex;
-    height: 100%;
-    align-items: center;
+    margin: 1rem 0;
+    display: block;
+    width: 100%;
 }
 
 .NavigationItem a {
     display: block;
-    color: #fff;
+    color: #8f5c2c;
     text-decoration: none;
-    height: 100%;
-    padding: 1.6rem 1rem;
-    border-bottom: .4rem solid transparent;
+    text-align: left;
+    width: 20rem;
     transition: all .5s;
 }
 
@@ -18,7 +17,33 @@
 .NavigationItem a:active,
 .NavigationItem a.active,  /* Links that contain active class */
 .NavigationItem a:focus {
-    border-bottom: .4rem solid orangered;
-    background-color: #40a4c8;
-    color: #fff;
+    color: #40a4c8;
+}
+
+@media (min-width: 500px) {
+    .NavigationItem {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        border-radius: .5rem;
+    }
+    
+    .NavigationItem a {
+        color: #fff;
+        height: 100%;
+        text-align: center;
+        padding: 1.6rem 1rem;
+        border-bottom: .4rem solid transparent;
+        border-radius: .7rem;
+        transition: all .5s;
+    }
+    
+    .NavigationItem a:hover,
+    .NavigationItem a:active,
+    .NavigationItem a.active,  /* Links that contain active class */
+    .NavigationItem a:focus {
+        border-bottom: .4rem solid orangered;
+        background-color: #40a4c8;
+        color: #fff;
+    }
 }
