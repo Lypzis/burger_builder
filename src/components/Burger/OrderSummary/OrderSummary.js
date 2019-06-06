@@ -1,31 +1,44 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import Aux from '../../../hoc/Aux';
+import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 
 import classes from './OrderSummary.css';
 
-const orderSummary = props => {
-    const ingredientSummary = Object.keys(props.ingredients)
-        .map(ingredientKey => 
-        <li key={ingredientKey}>
-            <span className={classes.span}>{ingredientKey}</span>: {props.ingredients[ingredientKey]}
-        </li>);
+class OrderSummary extends Component {
 
-    return (
-        <Aux>
-            <h3>Your Order</h3>
-            <p>A delicious burger with the following ingredients: </p>
+    // This could be a functional component
+    /*
+    componentWillUpdate() {
+        console.log('[OrderSummary.js] will update');
+    } */
 
-            <ul>
-                {ingredientSummary}
-            </ul>
-            <p><strong>Total Price: ${props.price.toFixed(2)}</strong></p>
-            <p>Continue to checkout?</p>
-            <Button btnType="Danger" clicked={props.purchaseCancel}>Cancel</Button>
-            <Button btnType="Success" clicked={props.purchaseContinue}>Continue</Button>
-        </Aux>
-    )
+    render() {
+        const ingredientSummary = Object.keys(this.props.ingredients)
+            .map(ingredientKey =>
+                <li key={ingredientKey}>
+                    <span className={classes.span}>{ingredientKey}</span>: {this.props.ingredients[ingredientKey]}
+                </li>);
+
+        return (
+            <Aux>
+                <h3 className={classes.OrderSummary__header}>Your Order</h3>
+
+                <div className={classes.OrderSummary__body}>
+                    <p>A delicious burger with the following ingredients: </p>
+
+                    <ul>
+                        {ingredientSummary}
+                    </ul>
+                    <p><strong>Total Price: ${this.props.price.toFixed(2)}</strong></p>
+                    <p>Continue to checkout?</p>
+                </div>
+
+                <Button btnType="Danger" clicked={this.props.purchaseCancel}>Cancel</Button>
+                <Button btnType="Success" clicked={this.props.purchaseContinue}>Continue</Button>
+            </Aux>
+        );
+    }
 };
 
-export default orderSummary;
+export default OrderSummary;

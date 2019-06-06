@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Aux from '../../../hoc/Aux';
-import withClass from '../../../hoc/withClass';
+import Aux from '../../../hoc/Aux/Aux';
+import withClass from '../../../hoc/WithClass/withClass';
 import BuildControl from './BuildControl/BuildControl';
 
 import classes from './BuildControls.css';
