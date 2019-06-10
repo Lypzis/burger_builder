@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Aux from '../../hoc/Aux/Aux';
+import axios from '../../axios';
 
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
@@ -102,7 +103,35 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        alert('You Continue! :D');
+        // alert('You Continue! :D');
+
+        const order = { 
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice.toFixed(2), // this should be checked in backend to see if it is not being manipulated
+            customer: {
+                name: 'Victor Piccoli',
+                address: {
+                    street: 'Teststret 1',
+                    zipCode: '12345',
+                    country: 'Brazil'
+                },
+                email: 'test@test.com'
+            },
+            deliveryMethod: 'fastest'
+        };
+
+        axios.post('/orders.json', order) // firebase syntax requires '.json'
+            .then( response => {
+                console.log(response);
+
+                this.purchaseCancelHandler();
+            }).catch( err => {
+                console.log(err);
+
+                this.purchaseCancelHandler();
+            }); 
+
+        
     }
 
     render() {
