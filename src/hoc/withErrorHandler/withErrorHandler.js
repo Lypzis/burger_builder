@@ -18,16 +18,23 @@ const withErrorHandler = (WrappedComponent, axios) => {
             // dynamically handles 'error state' if there was error while making a request
             // setting it to be the error returned, else is set to/remains null
             // sets error state to null, then returns request
-            axios.interceptors.request.use(req => {
+            this.reqInterceptor = axios.interceptors.request.use(req => {
                 this.setState({ error: null });
 
                 return req;
             });
 
             // returns response, else, sets error state to the error ocurred
-            axios.interceptors.response.use(res => res, err => {
+            this.resInterceptor = axios.interceptors.response.use(res => res, err => {
                 this.setState({ error: err });
             });
+        }
+
+        // When this component is not needed, eject interceptors to free memory
+        componentWillUnmount() {
+            console.log('Will it unmount ?')
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.request.eject(this.resInterceptor);
         }
 
         errorConfirmedHandler = () => {
