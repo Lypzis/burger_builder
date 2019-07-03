@@ -31,6 +31,7 @@ class BurgerBuilder extends Component {
 
     // setting up state with data from server
     async componentDidMount() {
+
         try {
             const response = await axios.get('/ingredients.json');
 
@@ -123,6 +124,7 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () => {
         // alert('You Continue! :D');
+        /*
         this.setState({ loading: true });
 
         const order = {
@@ -150,6 +152,21 @@ class BurgerBuilder extends Component {
 
                 this.setState({ loading: false, purchasing: false });
             });
+            */
+        const queryParams = []; // all ingredients(name=value) will be pushed as URI components into this array
+
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+
+        const queryString = queryParams.join('&'); // then joined in a string separated by '&'
+
+        this.props.history.push(
+            {
+                pathname: '/checkout',
+                search: `?${queryString}` // and passed here
+            }
+        );
     }
 
     render() {
