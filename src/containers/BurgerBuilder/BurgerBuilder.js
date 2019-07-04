@@ -10,6 +10,8 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
+import classes from './BurgerBuilder.css';
+
 //Global constants are named entirely in capital letters
 const INGREDIENT_PRICES = {
     salad: .5,
@@ -187,15 +189,16 @@ class BurgerBuilder extends Component {
                 purchaseCancel={this.purchaseCancelHandler} />;
 
             burger = <Aux>
-                <Burger ingredients={this.state.ingredients} />
-                <BuildControls
-                    disabled={disabledInfo}
-                    price={this.state.totalPrice}
-                    purchasable={this.state.purchasable}
-                    ordered={this.purchaseHandler}
-                    addIngredient={this.addIngredientHandler}
-                    removeIngredient={this.removeIngredientHandler} />
-
+                <div className={classes.BurgerBuilder}>
+                    <Burger ingredients={this.state.ingredients} />
+                    <BuildControls
+                        disabled={disabledInfo}
+                        price={this.state.totalPrice}
+                        purchasable={this.state.purchasable}
+                        ordered={this.purchaseHandler}
+                        addIngredient={this.addIngredientHandler}
+                        removeIngredient={this.removeIngredientHandler} />
+                </div>
             </Aux>;
         }
 

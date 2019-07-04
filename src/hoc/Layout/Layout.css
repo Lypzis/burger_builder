@@ -3,7 +3,12 @@
 }
 
 .content { 
-    margin: 5.5rem 0 3rem 0;
+    margin: 13rem auto;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    min-height: 50rem;
 }
 
 footer {
