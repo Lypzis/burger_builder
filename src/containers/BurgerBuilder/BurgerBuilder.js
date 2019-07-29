@@ -127,40 +127,14 @@ class BurgerBuilder extends Component {
     purchaseContinueHandler = () => {
         // alert('You Continue! :D');
         /*
-        this.setState({ loading: true });
-
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice.toFixed(2), // this should be checked in backend to see if it is not being manipulated
-            customer: {
-                name: 'Victor Piccoli',
-                address: {
-                    street: 'Teststret 1',
-                    zipCode: '12345',
-                    country: 'Brazil'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
-        };
-
-        axios.post('/orders.json', order) // firebase syntax requires '.json', you can simulate an error by removing it :D
-            .then(response => {
-                console.log(response);
-
-                this.setState({ loading: false, purchasing: false });
-            }).catch(err => {
-                console.log(err);
-
-                this.setState({ loading: false, purchasing: false });
-            });
+        
             */
         const queryParams = []; // all ingredients(name=value) will be pushed as URI components into this array
 
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-
+        queryParams.push('price=' + this.state.totalPrice); //also passed as a query parameter
         const queryString = queryParams.join('&'); // then joined in a string separated by '&'
 
         this.props.history.push(
