@@ -43,10 +43,12 @@ class ContactData extends Component {
                 console.log(response);
 
                 this.setState({ loading: false });
+                this.props.history.replace('/burger-builder');
             }).catch(err => {
                 console.log(err);
 
                 this.setState({ loading: false });
+                this.props.history.replace('/burger-builder');
             });
     }
 
