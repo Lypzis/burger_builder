@@ -19,7 +19,7 @@ class Orders extends Component {
                 const fetchedOrders = []; // this will hold order objects
                 for (let key in res.data) {
                     fetchedOrders.push(
-                        { 
+                        {
                             ...res.data[key], // this will distribute all attributes to the object being pushed
                             id: key     // and this will make sure that we won't lose its key
                         }
@@ -37,7 +37,12 @@ class Orders extends Component {
     render() {
         return (
             <div>
-                <Order />
+                {this.state.orders.map(order =>
+                    <Order
+                        key={order.id}
+                        ingredients={order.ingredients}
+                        price={order.price} />
+                )}
             </div>
         );
     }
