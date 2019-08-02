@@ -69,13 +69,19 @@ class ContactData extends Component {
 
     orderHandler = event => {
         event.preventDefault();
-        console.log(this.props.ingredients);
 
         this.setState({ loading: true });
+
+        const formData = {};
+
+        for(let formElementIdentifier in this.state.orderForm) {
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
 
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price, // this should be checked in backend to see if it is not being manipulated
+            orderData: formData
         };
 
         axios.post('/orders.json', order) // firebase syntax requires '.json', you can simulate an error by removing it :D
@@ -92,6 +98,19 @@ class ContactData extends Component {
             });
     }
 
+    inputChangedHandler = (event, inputIdentifier) => {
+        // Here order form is cloned superficially
+        const updatedOrderForm = {...this.state.orderForm};
+        // And down here its objects are deeply cloned, for safely changing 'value'
+        const updatedFormElement = {...updatedOrderForm[inputIdentifier]};
+
+        updatedFormElement.value = event.target.value; // so the value is updated here
+
+        updatedOrderForm[inputIdentifier] = updatedFormElement; // and then updated to the cloned form
+
+        this.setState({orderForm: updatedOrderForm});
+    }
+
     renderInputs = () => {
         const accumulator = [];
 
@@ -101,7 +120,8 @@ class ContactData extends Component {
                     key={input}
                     elementType={this.state.orderForm[input].elementType}
                     elementConfig={this.state.orderForm[input].elementConfig}
-                    value={this.state.orderForm[input].value} required />
+                    value={this.state.orderForm[input].value} 
+                    changed={event => this.inputChangedHandler(event, input)} required />
             );
         }
 
@@ -112,9 +132,9 @@ class ContactData extends Component {
         const inputs = this.renderInputs();
 
         let form = (
-            <form action="">
+            <form onSubmit={this.orderHandler}>
                 {inputs}
-                <Button btnType="success" clicked={this.orderHandler}>ORDER</Button>
+                <Button btnType="success">ORDER</Button>
             </form>
         );
 
