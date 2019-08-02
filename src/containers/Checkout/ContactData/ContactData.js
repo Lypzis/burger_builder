@@ -3,16 +3,66 @@ import React, { Component } from 'react';
 import axios from '../../../axios';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 
 import classes from './ContactData.css';
 
 class ContactData extends Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+        orderForm: {
+            name: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Name'
+                },
+                value: ''
+            },
+            street: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Street'
+                },
+                value: ''
+            },
+            zipCode: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Zip Code'
+                },
+                value: ''
+            },
+            country: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Country'
+                },
+                value: ''
+            },
+            email: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'email',
+                    placeholder: 'Your Email'
+                },
+                value: ''
+            },
+
+            deliveryMethod: {
+                elementType: 'select',
+                elementConfig: {
+                    options: [
+                        { value: 'none', displayValue: '-- Select --' },
+                        { value: 'fastest', displayValue: 'Fastest' },
+                        { value: 'cheapest', displayValue: 'Cheapest' },
+                    ]
+                },
+                value: ''
+            },
+
         },
         loading: false
     }
@@ -26,16 +76,6 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price, // this should be checked in backend to see if it is not being manipulated
-            customer: {
-                name: 'Victor Piccoli',
-                address: {
-                    street: 'Teststreet 1',
-                    zipCode: '12345',
-                    country: 'Brazil'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
         };
 
         axios.post('/orders.json', order) // firebase syntax requires '.json', you can simulate an error by removing it :D
@@ -52,13 +92,28 @@ class ContactData extends Component {
             });
     }
 
+    renderInputs = () => {
+        const accumulator = [];
+
+        for (let input in this.state.orderForm) {
+            accumulator.push(
+                <Input
+                    key={input}
+                    elementType={this.state.orderForm[input].elementType}
+                    elementConfig={this.state.orderForm[input].elementConfig}
+                    value={this.state.orderForm[input].value} required />
+            );
+        }
+
+        return accumulator;
+    }
+
     render() {
+        const inputs = this.renderInputs();
+
         let form = (
             <form action="">
-                <input type="text" name="name" placeholder="Your Name" required />
-                <input type="email" name="email" placeholder="Your Mail" required />
-                <input type="text" name="street" placeholder="Street" required />
-                <input type="text" name="postal" placeholder="Postal Code" required />
+                {inputs}
                 <Button btnType="success" clicked={this.orderHandler}>ORDER</Button>
             </form>
         );
