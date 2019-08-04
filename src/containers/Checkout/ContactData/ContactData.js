@@ -92,10 +92,13 @@ class ContactData extends Component {
                         { value: 'cheapest', displayValue: 'Cheapest' },
                     ]
                 },
-                value: ''
+                value: '',
+                validation: {},
+                valid: false
             },
 
         },
+        formIsValid: false,
         loading: false
     }
 
@@ -133,18 +136,16 @@ class ContactData extends Component {
     checkValidity = (value, rules) => {
         let isValid = true; // starts as valid
 
-        if (rules) {
-            // depends on which rules we have
-            if (rules.required)
-                isValid = value.trim() !== '' && isValid; // basically checking if field value is empty or filled with white spaces
+        // depends on which rules we have
+        if (rules.required)
+            isValid = value.trim() !== '' && isValid; // basically checking if field value is empty or filled with white spaces
 
-            // another example
-            if (rules.minLength)
-                isValid = value.length >= rules.minLength && isValid;
+        // another example
+        if (rules.minLength)
+            isValid = value.length >= rules.minLength && isValid;
 
-            if (rules.maxLength)
-                isValid = value.length <= rules.maxLength && isValid;
-        }
+        if (rules.maxLength)
+            isValid = value.length <= rules.maxLength && isValid;
 
         // passing 'isValid' to all the verifications will make sure that if
         // it gets reproved in one of them, it won't pass in any other.
@@ -164,7 +165,14 @@ class ContactData extends Component {
 
         updatedOrderForm[inputIdentifier] = updatedFormElement; // and then updated to the cloned form
 
-        this.setState({ orderForm: updatedOrderForm });
+        let formIsValid = true;
+        for (let inputIdentifier in updatedOrderForm) {
+            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid; // :D, remember if one is false, everything is!
+        }
+
+        console.log(formIsValid);
+
+        this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
     }
 
     renderInputs = () => {
@@ -194,7 +202,8 @@ class ContactData extends Component {
         let form = (
             <form onSubmit={this.orderHandler}>
                 {inputs}
-                <Button btnType="success">ORDER</Button>
+                {/* button to submit form is disable if form is not valid */}
+                <Button btnType="success" disabled={!this.state.formIsValid}>ORDER</Button>
             </form>
         );
 
