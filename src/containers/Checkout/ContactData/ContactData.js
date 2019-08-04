@@ -16,7 +16,13 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Your Name'
                 },
-                value: ''
+                value: '',
+
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
             street: {
                 elementType: 'input',
@@ -24,7 +30,13 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Your Street'
                 },
-                value: ''
+                value: '',
+
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
             zipCode: {
                 elementType: 'input',
@@ -32,7 +44,15 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Your Zip Code'
                 },
-                value: ''
+                value: '',
+
+                validation: {
+                    required: true,
+                    minLength: 5,
+                    maxLength: 5
+                },
+                valid: false,
+                touched: false
             },
             country: {
                 elementType: 'input',
@@ -40,7 +60,13 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Your Country'
                 },
-                value: ''
+                value: '',
+
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
             email: {
                 elementType: 'input',
@@ -48,7 +74,13 @@ class ContactData extends Component {
                     type: 'email',
                     placeholder: 'Your Email'
                 },
-                value: ''
+                value: '',
+
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
             },
 
             deliveryMethod: {
@@ -74,7 +106,7 @@ class ContactData extends Component {
 
         const formData = {};
 
-        for(let formElementIdentifier in this.state.orderForm) {
+        for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
         }
 
@@ -98,17 +130,41 @@ class ContactData extends Component {
             });
     }
 
+    checkValidity = (value, rules) => {
+        let isValid = true; // starts as valid
+
+        if (rules) {
+            // depends on which rules we have
+            if (rules.required)
+                isValid = value.trim() !== '' && isValid; // basically checking if field value is empty or filled with white spaces
+
+            // another example
+            if (rules.minLength)
+                isValid = value.length >= rules.minLength && isValid;
+
+            if (rules.maxLength)
+                isValid = value.length <= rules.maxLength && isValid;
+        }
+
+        // passing 'isValid' to all the verifications will make sure that if
+        // it gets reproved in one of them, it won't pass in any other.
+        return isValid;
+    }
+
     inputChangedHandler = (event, inputIdentifier) => {
         // Here order form is cloned superficially
-        const updatedOrderForm = {...this.state.orderForm};
+        const updatedOrderForm = { ...this.state.orderForm };
         // And down here its objects are deeply cloned, for safely changing 'value'
-        const updatedFormElement = {...updatedOrderForm[inputIdentifier]};
+        const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
 
         updatedFormElement.value = event.target.value; // so the value is updated here
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+
+        updatedFormElement.touched = true;
 
         updatedOrderForm[inputIdentifier] = updatedFormElement; // and then updated to the cloned form
 
-        this.setState({orderForm: updatedOrderForm});
+        this.setState({ orderForm: updatedOrderForm });
     }
 
     renderInputs = () => {
@@ -120,8 +176,12 @@ class ContactData extends Component {
                     key={input}
                     elementType={this.state.orderForm[input].elementType}
                     elementConfig={this.state.orderForm[input].elementConfig}
-                    value={this.state.orderForm[input].value} 
-                    changed={event => this.inputChangedHandler(event, input)} required />
+                    value={this.state.orderForm[input].value}
+                    invalid={!this.state.orderForm[input].valid}
+                    shouldValidate={this.state.orderForm[input].validation}
+                    touched={this.state.orderForm[input].touched}
+                    changed={event => this.inputChangedHandler(event, input)}
+                    required />
             );
         }
 
