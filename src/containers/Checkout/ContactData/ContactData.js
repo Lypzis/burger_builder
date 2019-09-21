@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 
 import axios from '../../../axios';
 import Button from '../../../components/UI/Button/Button';
@@ -114,7 +115,7 @@ class ContactData extends Component {
         }
 
         const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ings,
             price: this.props.price, // this should be checked in backend to see if it is not being manipulated
             orderData: formData
         };
@@ -219,4 +220,11 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients,
+        price: state.price
+    }
+}
+
+export default connect(mapStateToProps)(ContactData);
