@@ -5,6 +5,8 @@ import axios from '../../../axios';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
+import * as actions from '../../../store/actions/index';
 
 import classes from './ContactData.css';
 
@@ -106,8 +108,6 @@ class ContactData extends Component {
     orderHandler = event => {
         event.preventDefault();
 
-        this.setState({ loading: true });
-
         const formData = {};
 
         for (let formElementIdentifier in this.state.orderForm) {
@@ -120,18 +120,8 @@ class ContactData extends Component {
             orderData: formData
         };
 
-        axios.post('/orders.json', order) // firebase syntax requires '.json', you can simulate an error by removing it :D
-            .then(response => {
-                console.log(response);
-
-                this.setState({ loading: false });
-                this.props.history.replace('/burger-builder');
-            }).catch(err => {
-                console.log(err);
-
-                this.setState({ loading: false });
-                this.props.history.replace('/burger-builder');
-            });
+        // executes action
+        this.props.onOrderBurger(order);
     }
 
     checkValidity = (value, rules) => {
@@ -227,4 +217,11 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBurger: (orderData) => dispatch(actions.purchaseBurgerStart(orderData)),
+
+    }
+}
+
+export default connect(mapStateToProps)(withErrorHandler(ContactData, axios));

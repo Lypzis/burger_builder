@@ -2,14 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux'; //the middleare in question is 'redux-thunk
+import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './containers/App';
-import reducer from './store/reducer';
+import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(reducer);
+// thunk middleware
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+// advanced store setup with redux devtools extension
+const store = createStore(
+    burgerBuilderReducer,
+    composeEnhancers(
+        applyMiddleware(thunk)
+    )
+);
 
 const app = (
     <Provider store={store}>
