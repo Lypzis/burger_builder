@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionsTypes';
+import { updateObject } from '../utility';
 
 const initialState = {
     ingredients: null,
@@ -17,40 +18,45 @@ const INGREDIENT_PRICES = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ADD_INGREDIENT:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients, // deep clone of ingredients already on the burger, remember
-                    // key: increment value of respective key, which is the ingrediente I want to add
-                    [action.ingredientName]: ++state.ingredients[action.ingredientName] 
-                },
+            // key: increment value of respective key, which is the ingrediente I want to add
+            const updatedIngredient = { [action.ingredientName]: ++state.ingredients[action.ingredientName] };
+
+            // updatedIngredient is set into 'state.ingredients' where it respectively replaces the old value
+            const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+
+            // then the new ingredients and total price are passed into and object
+            const updatedState = {
+                ingredients: updatedIngredients,
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
-            };
+            }
+
+            // which returns the utility function again, passing where the old state values
+            // are joined with the updated values, respectively: ingredients and totalPrice.
+            return updateObject(state, updatedState);
         case actionTypes.REMOVE_INGREDIENT:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.ingredientName]: --state.ingredients[action.ingredientName]
-                },
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
-            };
+            const updatedIngredient2 = { [action.ingredientName]: --state.ingredients[action.ingredientName] };
+            const updatedIngredients2 = updateObject(state.ingredients, updatedIngredient2);
+            const updatedState2 = {
+                ingredients: updatedIngredients2,
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+            }
+
+            return updateObject(state, updatedState2); // '2' because you can't reassign a const, this obviously not ideal
         case actionTypes.SET_INGREDIENTS: // ingredients initialized
-            return {
-                ...state,
-                ingredients: { // turned into an object for manualy setting the position of ingredients.
-                    salad: action.ingredients.salad,
-                    bacon: action.ingredients.bacon,
-                    cheese: action.ingredients.cheese,
-                    meat: action.ingredients.meat // flexibility is lost this way... D: 
-                },
-                error: false
-            }
+            return updateObject(
+                state,
+                {
+                    ingredients: { // turned into an object for manualy setting the position of ingredients.
+                        salad: action.ingredients.salad,
+                        bacon: action.ingredients.bacon,
+                        cheese: action.ingredients.cheese,
+                        meat: action.ingredients.meat // flexibility is lost this way... D: 
+                    },
+                    totalPrice: 4, // this will reset the price, when back to BurgerBuilder container
+                    error: false
+                });
         case actionTypes.FETCH_INGREDIENTS_FAILED:
-            return {
-                ...state,
-                error: true
-            }
+            return updateObject(state, { error: true });
         default:
             return state;
     }

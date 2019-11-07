@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Aux from '../../hoc/Aux/Aux';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
+//import * as actions from '../../store/actions/index';
 
 class Checkout extends Component {
 
@@ -17,16 +18,22 @@ class Checkout extends Component {
     }
 
     render() {
+        let summary = <Redirect to="/" />
 
-        return (
-            <Aux>
-                <CheckoutSummary
-                    ingredients={this.props.ings} //this.props.location.ingredients
-                    cancelOrder={this.cancelCheckoutHandler}
-                    continueOrder={this.continueCheckoutHandler} />
-                <Route
-                    path={this.props.match.path + '/contact-data'}
-                    component={ContactData}
+        if (this.props.ings) {
+            // if purchase succeds, redirects to home
+            const purchasedRedirect = this.props.purchased ? <Redirect to="/" /> : null;
+
+            summary = (
+                <Aux>
+                    {purchasedRedirect}
+                    <CheckoutSummary
+                        ingredients={this.props.ings} //this.props.location.ingredients
+                        cancelOrder={this.cancelCheckoutHandler}
+                        continueOrder={this.continueCheckoutHandler} />
+                    <Route
+                        path={this.props.match.path + '/contact-data'}
+                        component={ContactData}
 
                     /*Still renders the component with 
                 the advantage of being able to pass props to it :D
@@ -37,14 +44,17 @@ class Checkout extends Component {
                             {...props} />  distribute properties from this component to 'ContactData'
                     )} */
                     />
-            </Aux>
-        );
+                </Aux>
+            );
+        }
+        return summary; // Yep, that's the end result of the return
     }
 }
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
+        ings: state.burgerBuilder.ingredients,
+        purchased: state.orders.purchased
     }
 }
 
