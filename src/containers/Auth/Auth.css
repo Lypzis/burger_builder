@@ -1,0 +1,24 @@
+.Auth {
+    margin-right: 3rem;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+    border: 1px solid #eee;
+    padding: 1rem;
+}
+
+.Auth form {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem;
+}
+
+.Auth input:not(:last-child) {
+    margin-bottom: .7rem;
+}
+
+@media (min-width: 600px) {
+    .Auth {
+        width: 500px;
+    }
+}
