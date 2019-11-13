@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import classes from './Layout.css';
 
@@ -18,14 +19,18 @@ class Layout extends Component {
 
     // negates previous 'showSideDrawer' from the state
     sideDrawerToggleHandler = () => {
-        this.setState( prevState => { return {showSideDrawer: !prevState.showSideDrawer} });
+        this.setState(prevState => { return { showSideDrawer: !prevState.showSideDrawer } });
     }
 
     render() {
         return (
             <Aux>
-                <Toolbar toggle={this.sideDrawerToggleHandler} />
-                <SideDrawer open={this.state.showSideDrawer} closed={this.sideDrawerClosedHandler} />
+                <Toolbar
+                    isAuth={this.props.isAuthenticated}
+                    toggle={this.sideDrawerToggleHandler} />
+                <SideDrawer
+                    isAuth={this.props.isAuthenticated}
+                    open={this.state.showSideDrawer} closed={this.sideDrawerClosedHandler} />
                 <header><p>SideDrawer</p></header>
                 <main className={classes.content}>{this.props.children}</main>
                 <footer>Burger Builder © 2019 by Lypzis.</footer>
@@ -34,4 +39,10 @@ class Layout extends Component {
     }
 }
 
-export default withClass(Layout, classes.Layout);
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.token !== null // if there is a token, then the user is authenticaded, otherwise, he is not
+    }
+}
+
+export default connect(mapStateToProps)(withClass(Layout, classes.Layout));
