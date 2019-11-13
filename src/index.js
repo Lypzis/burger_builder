@@ -11,6 +11,7 @@ import App from './containers/App';
 //redux reducers 
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -19,7 +20,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducers = combineReducers({
     burgerBuilder: burgerBuilderReducer,
-    orders: orderReducer
+    orders: orderReducer,
+    auth: authReducer
 });
 
 // advanced store setup with redux devtools extension

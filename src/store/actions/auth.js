@@ -7,10 +7,11 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = authData => {
+export const authSuccess = (idToken, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData: authData
+        idToken: idToken,
+        userId: userId
     }
 }
 
@@ -21,7 +22,22 @@ export const authFail = error => {
     }
 }
 
-export const auth = (email, password) => {
+export const logout = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
+
+export const checkAuthTimeout = expirationTime => {
+    return dispatch => {
+        setTimeout(() => {
+           dispatch(logout());
+        }, expirationTime * 1000); // * 1000 to turn the value into milliseconds
+    }
+}
+
+// method: on signup or signin
+export const auth = (email, password, isSignup) => {
     return async dispatch => {
         dispatch(authStart());
 
@@ -31,13 +47,20 @@ export const auth = (email, password) => {
             returnSecureToken: true
         }
 
+        const key = 'AIzaSyDM078rTCeYSqIRl1CnEWvH1uK4NW8OhYg';
+        let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`;
+
+        if(isSignup)
+            url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`;
+
         try {
-            const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDM078rTCeYSqIRl1CnEWvH1uK4NW8OhYg', authData);
+            const res = await axios.post(url, authData);
             console.log(res);
-            dispatch(authSuccess(res.data));
+            dispatch(authSuccess(res.data.idToken, res.data.localId));
+            dispatch(checkAuthTimeout(res.data.expiresIn))
         } catch(err) {
-            console.log(err.error);
-            dispatch(authFail(err));
+            console.log(err.response.data.error.message); // this is what I want to show in Auth.js
+            dispatch(authFail(err.response.data.error));
         }
     }
 }

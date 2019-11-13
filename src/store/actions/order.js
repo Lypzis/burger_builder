@@ -24,14 +24,14 @@ export const purchaseBurgerStart = () => {
     }
 }
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (token, orderData) => {
     return async dispatch => {
 
         // loading
         dispatch(purchaseBurgerStart());
 
         try {
-            const response = await axios.post('/orders.json', orderData) // firebase syntax requires '.json', you can simulate an error by removing it :D
+            const response = await axios.post(`/orders.json?auth=${token}`, orderData) // firebase syntax requires '.json', you can simulate an error by removing it :D
 
             console.log(response.data);
 
@@ -70,12 +70,12 @@ export const fetchOrdersStart = () => {
     }
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = token => {
     return async dispatch => {
         dispatch(fetchOrdersStart());
 
         try {
-            const response = await axios.get('/orders.json');
+            const response = await axios.get(`/orders.json?auth=${token}`); // only authenticated user(with token) may view orders
             //console.log(response.data);
             // to turn multiple objects into one array
             const fetchedOrders = []; // this will hold order objects
