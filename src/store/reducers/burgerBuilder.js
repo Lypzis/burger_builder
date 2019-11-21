@@ -25,7 +25,8 @@ const addIngredient = (state, action) => {
     // then the new ingredients and total price are passed into and object
     const updatedState = {
         ingredients: updatedIngredients,
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+        building: true
     }
 
     // which returns the utility function again, passing where the old state values
@@ -38,7 +39,8 @@ const removeIngredient = (state, action) => {
     const updatedIngredients2 = updateObject(state.ingredients, updatedIngredient2);
     const updatedState2 = {
         ingredients: updatedIngredients2,
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+        building: true
     }
 
     return updateObject(state, updatedState2); // '2' because you can't reassign a const, this obviously not ideal
@@ -55,7 +57,8 @@ const setIngredients = (state, action) => {
                 meat: action.ingredients.meat // flexibility is lost this way... D: 
             },
             totalPrice: 4, // this will reset the price, when back to BurgerBuilder container
-            error: false
+            error: false,
+            building: false
         });
 }
 

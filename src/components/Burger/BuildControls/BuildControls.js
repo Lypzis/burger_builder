@@ -29,7 +29,7 @@ const buildControls = props => ( // to fixed will fix the price value to have on
         <button
             className={classes.OrderButton}
             disabled={!props.purchasable}
-            onClick={props.ordered}>ORDER NOW</button>
+            onClick={props.ordered}>{props.isAuth ? 'ORDER NOW' : 'Sign Up to Order'}</button>
     </Aux>
 );
 

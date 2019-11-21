@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import classes from './App.css';
 
@@ -9,22 +10,36 @@ import Checkout from './Checkout/Checkout';
 import Orders from './Orders/Orders';
 import Auth from './Auth/Auth';
 import Logout from './Auth/Logout/Logout';
+import * as actions from '../store/actions/index';
 
-const App = props => {
-  return (
-    <div className={classes.App} >
-      <Layout>
-        <Switch>
-          <Route path="/burger-builder" component={BurgerBuilder} />
-          <Route path="/orders" component={Orders} />
-          <Route path="/checkout" component={Checkout} />
-          <Route path="/auth" component={Auth} />
-          <Route path="/logout" component={Logout} />
-          <Redirect from="/" to="/burger-builder" />
-        </Switch>
-      </Layout>
-    </div>
-  );
+class App extends Component {
+
+  componentDidMount() {
+    this.props.onTryAutoSignIn();
+  }
+
+  render() {
+    return (
+      <div className={classes.App} >
+        <Layout>
+          <Switch>
+            <Route path="/burger-builder" component={BurgerBuilder} />
+            <Route path="/orders" component={Orders} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/auth" component={Auth} />
+            <Route path="/logout" component={Logout} />
+            <Redirect from="/" to="/burger-builder" />
+          </Switch>
+        </Layout>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignIn: () => dispatch(actions.authCheckState())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App);
