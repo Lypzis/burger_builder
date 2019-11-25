@@ -117,10 +117,9 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ings,
             price: this.props.price, // this should be checked in backend to see if it is not being manipulated
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
         };
-
-        console.log(order);
 
         // executes action
         this.props.onOrderBurger(this.props.token, order);
@@ -227,7 +226,8 @@ const mapStateToProps = state => {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
         loading: state.orders.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 

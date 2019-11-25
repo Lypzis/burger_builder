@@ -70,12 +70,15 @@ export const fetchOrdersStart = () => {
     }
 }
 
-export const fetchOrders = token => {
+export const fetchOrders = (token, userId) => {
     return async dispatch => {
         dispatch(fetchOrdersStart());
 
+        //now only the owner of the order will see the order, obs: this query is Firebase specific
+        const queryParams= `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+
         try {
-            const response = await axios.get(`/orders.json?auth=${token}`); // only authenticated user(with token) may view orders
+            const response = await axios.get(`/orders.json${queryParams}`); // only authenticated user(with token) may view orders
             //console.log(response.data);
             // to turn multiple objects into one array
             const fetchedOrders = []; // this will hold order objects

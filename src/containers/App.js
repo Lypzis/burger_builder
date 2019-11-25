@@ -19,20 +19,41 @@ class App extends Component {
   }
 
   render() {
+
+    // guard routes - these are for unauthenticated users
+    let routes = (
+      <Switch>
+        <Route path="/burger-builder" component={BurgerBuilder} />
+        <Route path="/auth" component={Auth} />
+        <Redirect from="/" to="/burger-builder" />
+      </Switch>
+    );
+
+    // and these are accessible for authenticated users
+    if (this.props.isAuthenticated)
+      routes = (
+        <Switch>
+          <Route path="/burger-builder" component={BurgerBuilder} />
+          <Route path="/orders" component={Orders} />
+          <Route path="/checkout" component={Checkout} />
+          <Route path="/logout" component={Logout} />
+          <Redirect from="/" to="/burger-builder" />
+        </Switch>
+      );
+
     return (
       <div className={classes.App} >
         <Layout>
-          <Switch>
-            <Route path="/burger-builder" component={BurgerBuilder} />
-            <Route path="/orders" component={Orders} />
-            <Route path="/checkout" component={Checkout} />
-            <Route path="/auth" component={Auth} />
-            <Route path="/logout" component={Logout} />
-            <Redirect from="/" to="/burger-builder" />
-          </Switch>
+          {routes}
         </Layout>
       </div>
     );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.token !== null
   }
 }
 
@@ -42,4 +63,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
