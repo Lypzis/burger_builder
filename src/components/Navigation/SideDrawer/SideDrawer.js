@@ -16,13 +16,13 @@ const sideDrawer = props => {
         <Aux>
             <Backdrop show={props.open} clicked={props.closed}/>
 
-            <div className={attachedClass.join(' ')}>
+            <div className={attachedClass.join(' ')} onClick={props.closed}> {/** props.closed put in here, so anywhere clicked in the menu,it will close */}
                 <div className={classes.Logo}>
                     <Logo />
                 </div>
 
                 <nav>
-                    <NavigationItems isAutheticated={props.isAuth}/>
+                    <NavigationItems isAuthenticated={props.isAuth}/>
                 </nav>
             </div>
         </Aux>

@@ -34,6 +34,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/burger-builder" component={BurgerBuilder} />
+          <Route path="/auth" component={Auth} /> {/** needs to be here beacause of the redirection function it contains */}
           <Route path="/orders" component={Orders} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/logout" component={Logout} />
