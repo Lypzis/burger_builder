@@ -8,25 +8,25 @@ import Aux from '../../../hoc/Aux/Aux';
 import classes from './SideDrawer.css';
 
 const sideDrawer = props => {
-    let attachedClass = [classes.SideDrawer, classes.Close];
+	let attachedClass = [classes.SideDrawer, classes.Close];
 
-    if (props.open) attachedClass =  [classes.SideDrawer, classes.Open];
+	if (props.open) attachedClass = [classes.SideDrawer, classes.Open];
 
-    return (
-        <Aux>
-            <Backdrop show={props.open} clicked={props.closed}/>
+	return (
+		<Aux>
+			<Backdrop show={props.open} clicked={props.closed} />
 
-            <div className={attachedClass.join(' ')} onClick={props.closed}> {/** props.closed put in here, so anywhere clicked in the menu,it will close */}
-                <div className={classes.Logo}>
-                    <Logo />
-                </div>
-
-                <nav>
-                    <NavigationItems isAuthenticated={props.isAuth}/>
-                </nav>
-            </div>
-        </Aux>
-    );
+			<div className={attachedClass.join(' ')} onClick={props.closed}>
+				{/** props.closed put in here, so anywhere clicked in the menu,it will close */}
+				<div className={classes.Logo}>
+					<Logo />
+				</div>
+				<nav>
+					<NavigationItems isAuthenticated={props.isAuth} />
+				</nav>
+			</div>
+		</Aux>
+	);
 };
 
 export default sideDrawer;
