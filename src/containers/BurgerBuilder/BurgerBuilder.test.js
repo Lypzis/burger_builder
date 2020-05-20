@@ -11,8 +11,12 @@ describe('<BurgerBuilder />', () => {
 	let wrapper;
 
 	beforeEach(() => {
-		wrapper = shallow(<BurgerBuilder />);
+		// it needs that prop in order to pass the test, look at 'componentDidMount'
+		wrapper = shallow(<BurgerBuilder onInitIngredients={() => {}} />);
 	});
 
-	it('Should render <BuildControls when receiving ingredients', () => {});
+	it('Should render <BuildControls /> when receiving ingredients', () => {
+		wrapper.setProps({ ings: { salad: 0 } });
+		expect(wrapper.find(BuildControls)).toHaveLength(1);
+	});
 });
